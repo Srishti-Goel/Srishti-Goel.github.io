@@ -1,0 +1,40 @@
+{{ $page := .page }}
+{{ $term := lower .term }}
+{{ $start := $page.Date.Format "Jan 2006" }}
+{{ with $page.Params.startdate }}{{ $start = (time.AsTime .).Format "Jan 2006" }}{{ end }}
+{{ $end := "Present" }}
+{{ with $page.Params.enddate }}{{ $end = (time.AsTime .).Format "Jan 2006" }}{{ end }}
+{{ $range := $start }}
+{{ if ne $start $end }}{{ $range = printf "%s – %s" $start $end }}{{ end }}
+<div class="tag-post-card">
+  <a href="{{ $page.RelPermalink }}" class="tag-post-link" aria-label="{{ $page.Title }}"></a>
+  <div class="tag-post-content">
+    <div class="tag-post-header">
+      <h3 class="tag-post-title">{{ $page.Title }}</h3>
+      <time class="tag-post-date">{{ $range }}</time>
+    </div>
+
+    {{ if $page.Summary }}
+      <div class="tag-post-summary">
+        {{ $page.Summary | plainify | truncate 140 }}
+      </div>
+    {{ end }}
+
+    {{ with $page.Params.skills }}
+      <div class="tag-post-tags">
+        {{ range . }}
+          <a href="{{ printf "skills/%s/" (. | urlize) | relLangURL }}"
+             class="tag-chip {{ if eq (lower .) $term }}tag-chip-active{{ end }}"
+             onclick="event.stopPropagation();">{{ . }}</a>
+        {{ end }}
+      </div>
+    {{ end }}
+
+    <div class="tag-post-read-more">
+      <span class="read-more-text">{{ i18n "readMore" }}</span>
+      <svg xmlns="http://www.w3.org/2000/svg" class="read-more-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+      </svg>
+    </div>
+  </div>
+</div>

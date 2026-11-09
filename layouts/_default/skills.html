@@ -1,0 +1,156 @@
+{{ define "main" }}
+{{ $used := slice }}
+{{ range $term, $pages := site.Taxonomies.skills }}{{ $used = $used | append $term }}{{ end }}
+
+{{ $known := slice }}
+{{ range hugo.Data.skills.categories }}{{ range .skills }}{{ $known = $known | append .id }}{{ end }}{{ end }}
+{{ range $used }}{{ if not (in $known .) }}{{ warnf "Skill %q is used in a project but missing from data/skills.yaml" . }}{{ end }}{{ end }}
+
+{{ $rots := slice -14 9 -6 16 -10 5 12 -8 }}
+<section class="toolbox">
+  <h1>{{ .Title }}</h1>
+  {{ .Content }}
+
+  {{ if not $used }}
+  <p class="tb-empty">No skills yet. Add a <code>skills: [...]</code> list to a project to fill the toolbox.</p>
+  {{ else }}
+  <div class="tb-layout">
+
+    <nav class="tb-side" role="tablist" aria-orientation="vertical" aria-label="Tool trays">
+      {{ range $c := hugo.Data.skills.categories }}
+      {{ $mine := where ($c.skills | default (slice)) "id" "in" $used }}
+      <button class="tb-tab" type="button" role="tab"
+              id="tb-tab-{{ $c.id }}" data-cat="{{ $c.id }}"
+              aria-controls="tb-pane-{{ $c.id }}" aria-selected="false" tabindex="-1"
+              style="--tool-color: {{ $c.color | default "#e8a33d" }}">
+        <span class="tb-tabname">{{ $c.label }}</span>
+        <span class="tb-count">{{ len $mine }}</span>
+      </button>
+      {{ end }}
+    </nav>
+
+    <div class="tb-main">
+      {{ range $c := hugo.Data.skills.categories }}
+      {{ $mine := where ($c.skills | default (slice)) "id" "in" $used }}
+      {{ $color := $c.color | default "#e8a33d" }}
+      <div class="tb-pane" role="tabpanel" id="tb-pane-{{ $c.id }}"
+           data-cat="{{ $c.id }}" aria-labelledby="tb-tab-{{ $c.id }}"
+           style="--tool-color: {{ $color }}">
+        <h2 class="tb-label">{{ $c.label }}</h2>
+        <div class="tb-tray">
+          {{ range $i, $s := $mine }}
+          {{ $rot := $s.rotate | default (index $rots (mod $i (len $rots))) }}
+          <a class="tb-tool" href="{{ printf "skills/%s/" ($s.id | urlize) | relURL }}"
+             style="{{ printf "--tool-color:%s;--rot:%vdeg" $color $rot | safeCSS }}">
+            <span class="tb-art">{{ partial "tool-icon.html" ($s.tool | default "wrench") }}</span>
+            <span class="tb-name">{{ $s.name }}</span>
+          </a>
+          {{ end }}
+        </div>
+      </div>
+      {{ end }}
+    </div>
+
+  </div>
+  {{ end }}
+</section>
+
+<style>
+  .toolbox { --tb-accent: #e8a33d; --tb-line: color-mix(in srgb, currentColor 28%, transparent); }
+  .tb-layout { display: grid; grid-template-columns: 13rem 1fr; gap: 1.5rem; margin: 2rem 0; align-items: start; }
+
+  /* sidebar */
+  .tb-side { display: grid; gap: .25rem; border: 1px solid var(--tb-line); padding: .5rem; }
+  .tb-tab { display: flex; align-items: baseline; gap: .6rem; width: 100%; text-align: left;
+            padding: .6rem .7rem; background: transparent; color: inherit; font: inherit; cursor: pointer;
+            border: 0; border-left: 2px solid transparent; transition: color .15s, border-color .15s; }
+  .tb-tab:hover, .tb-tab:focus-visible { color: var(--tool-color); outline: none; }
+  .tb-tab[aria-selected="true"] { color: var(--tool-color); border-left-color: var(--tool-color);
+            background: color-mix(in srgb, var(--tool-color) 10%, transparent); }
+  .tb-count { font-family: ui-monospace, monospace; font-size: .75rem; opacity: .7; }
+  .tb-tabname { flex: 1; }
+
+  /* the box */
+  .tb-main { min-width: 0; }
+  .tb-pane { border: 1px solid var(--tb-line); padding: 1rem;
+             background: color-mix(in srgb, currentColor 5%, transparent);
+             box-shadow: inset 0 2px 12px rgba(0,0,0,.35); }
+  .tb-label { font-family: ui-monospace, monospace; font-size: 2rem; letter-spacing: .08em;
+              text-transform: uppercase; margin: 0 0 .9rem; color: var(--tool-color); }
+  .tb-tray { display: grid; grid-template-columns: repeat(auto-fill, minmax(7.5rem, 1fr)); gap: .9rem; }
+  .tb-empty { opacity: .7; }
+
+  /* each tool slot (a link to the skill's page) */
+  .tb-tool { display: flex; flex-direction: column; align-items: center; gap: .4rem; height: 11.5rem;
+             padding: .6rem .4rem .5rem; background: color-mix(in srgb, currentColor 4%, transparent);
+             color: inherit; text-decoration: none; border: 1px dashed var(--tb-line);
+             border-radius: .5rem; transition: border-color .15s, background .15s; }
+  .tb-art { flex: 1; min-height: 0; width: 5rem; transform: rotate(var(--rot, 0deg)); transition: transform .2s; }
+  .tb-name { font-family: ui-monospace, monospace; font-size: .68rem; letter-spacing: .05em;
+             text-transform: uppercase; padding: .15rem .45rem; border-left: 3px solid var(--tool-color);
+             background: color-mix(in srgb, currentColor 8%, transparent); }
+  .tb-tool:hover, .tb-tool:focus-visible {
+    border-color: var(--tool-color); border-style: solid; outline: none;
+    background: color-mix(in srgb, var(--tool-color) 10%, transparent); }
+  .tb-tool:hover .tb-art, .tb-tool:focus-visible .tb-art { transform: rotate(0) scale(1.08); }
+
+  /* tool artwork colors */
+  .tl { width: 100%; height: 100%; overflow: visible; }
+  .tl .c { fill: var(--tool-color); }
+  .tl .c2 { fill: color-mix(in srgb, var(--tool-color) 62%, #000); }
+  .tl .cs { stroke: var(--tool-color); fill: none; stroke-width: 10; stroke-linecap: round; }
+  .tl .m { fill: #b9c0c7; }
+  .tl .m2 { fill: #7e868e; }
+  .tl .ms { stroke: #9aa2aa; fill: none; stroke-width: 5; stroke-linecap: round; }
+  .tl .bristle { fill: #c9a24b; }
+  .tl .k { stroke: #23272c; stroke-width: 1.6; fill: none; stroke-linecap: round; }
+
+  @media (max-width: 40rem) {
+    .tb-layout { grid-template-columns: 1fr; }
+    .tb-side { display: flex; overflow-x: auto; }
+    .tb-tab { width: auto; white-space: nowrap; border-left: 0; border-bottom: 2px solid transparent; }
+    .tb-tab[aria-selected="true"] { border-bottom-color: var(--tool-color); }
+    .tb-tray { grid-template-columns: repeat(auto-fill, minmax(6.5rem, 1fr)); }
+    .tb-tool { height: 10rem; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .tb-tool, .tb-tab, .tb-art { transition: none; }
+    .tb-tool:hover .tb-art, .tb-tool:focus-visible .tb-art { transform: none; }
+  }
+</style>
+
+<script>
+  (function () {
+    var tabs = Array.prototype.slice.call(document.querySelectorAll('.tb-tab'));
+    var panes = Array.prototype.slice.call(document.querySelectorAll('.tb-pane'));
+    if (!tabs.length) return;
+
+    function select(id, focus) {
+      tabs.forEach(function (t) {
+        var on = t.dataset.cat === id;
+        t.setAttribute('aria-selected', on ? 'true' : 'false');
+        t.tabIndex = on ? 0 : -1;
+        if (on && focus) t.focus();
+      });
+      panes.forEach(function (p) { p.hidden = p.dataset.cat !== id; });
+      if (history.replaceState) history.replaceState(null, '', '#' + id);
+    }
+
+    tabs.forEach(function (t, i) {
+      t.addEventListener('click', function () { select(t.dataset.cat, false); });
+      t.addEventListener('keydown', function (e) {
+        var next = null;
+        if (e.key === 'ArrowDown' || e.key === 'ArrowRight') next = (i + 1) % tabs.length;
+        else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') next = (i - 1 + tabs.length) % tabs.length;
+        else if (e.key === 'Home') next = 0;
+        else if (e.key === 'End') next = tabs.length - 1;
+        if (next !== null) { e.preventDefault(); select(tabs[next].dataset.cat, true); }
+      });
+    });
+
+    var start = location.hash.slice(1);
+    var valid = tabs.some(function (t) { return t.dataset.cat === start; });
+    select(valid ? start : tabs[0].dataset.cat, false);
+  })();
+</script>
+{{ end }}

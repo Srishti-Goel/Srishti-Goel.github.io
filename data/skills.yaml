@@ -1,0 +1,105 @@
+tools:
+  - name: hammer
+  - name: screwdriver
+  - name: pliers
+  - name: tape
+  - name: ruler
+  - name: nut
+  - name: bolt
+  - name: brush
+  - name: bit
+  - name: gear
+
+categories:
+  - id: computing
+    label: Computing
+    color: "#e8a33d"
+    skills:
+      - id: python
+        name: python
+        tool: hammer
+      - id: linux
+        name: linux
+        tool: pliers
+      - id: matlab
+        name: matlab
+        tool: tape
+      - id: pytorch
+        name: pytorch
+        tool: ruler
+      - id: autolens
+        name: autolens
+        tool: nut
+      - id: tensorflow
+        name: tensorflow
+        tool: bolt
+      - id: astropy
+        name: astropy
+        tool: brush
+      - id: sklearn
+        name: sklearn
+        tool: bit
+      - id: opencv
+        name: opencv
+        tool: gear
+      - id: numpy
+        name: numpy
+        tool: hammer
+      - id: qiskit
+        name: qiskit
+        tool: screwdriver
+      - id: git
+        name: git
+        tool: screwdriver
+
+  - id: physics
+    label: Physics
+    color: "#4fa3d9"
+    skills:
+      - id: optics
+        name: optics
+        tool: hammer
+      - id: astrophysics
+        name: astrophysics
+        tool: screwdriver
+      - id: cosmology
+        name: cosmology
+        tool: pliers
+      - id:
+        name:
+        tool:
+      - id:
+        name:
+        tool:
+      - id:
+        name:
+        tool:
+      - id:
+        name:
+        tool:
+      - id:
+        name:
+        tool:
+      - id:
+        name:
+        tool:
+
+  - id: soft-skills
+    label: Soft skills
+    color: "#d96aa0"
+    skills:
+      - id: public-speaking
+        name: Public speaking
+        tool: gear
+      - id:
+        name:
+        tool:
+      - id:
+        name:
+        tool:
+      - id:
+        name:
+        tool:
+      - id:
+        name:
+        tool:

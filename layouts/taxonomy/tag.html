@@ -1,0 +1,74 @@
+{{ define "main" }}
+  {{ $term := .Title }}
+
+  {{ $ongoing := slice }}
+  {{ range .Pages }}
+    {{ if not .Params.enddate }}{{ $ongoing = $ongoing | append . }}{{ end }}
+  {{ end }}
+  {{ $ongoing = sort $ongoing "Date" "desc" }}
+
+  {{ $finished := where .Pages "Params.enddate" "ne" nil }}
+
+  <div class="tag-page">
+    <div class="tag-header">
+      <div class="tag-header-content">
+        <svg xmlns="http://www.w3.org/2000/svg" class="tag-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+        </svg>
+        <h1 class="tag-title">{{ .Title }}</h1>
+      </div>
+      <div class="tag-count">
+        {{ len .Pages }} {{ if eq (len .Pages) 1 }}{{ i18n "postSingular" }}{{ else }}{{ i18n "postPlural" }}{{ end }}
+      </div>
+    </div>
+
+    <div class="tag-posts-grouped">
+
+      <!-- Current / ongoing projects first -->
+      {{ with $ongoing }}
+        <div class="year-group">
+          <div class="year-indicator">
+            <div class="year-circle" title="Current / ongoing">
+              <span class="year-text">Now</span>
+              <div class="year-glow"></div>
+            </div>
+            <div class="year-line"></div>
+          </div>
+          <div class="year-posts">
+            <p class="year-caption">Current / ongoing</p>
+            {{ range . }}{{ partial "tag-post-card.html" (dict "page" . "term" $term) }}{{ end }}
+          </div>
+        </div>
+      {{ end }}
+
+      <!-- Finished projects, grouped by the year they ended -->
+      {{ range $finished.GroupByParamDate "enddate" "2006" }}
+        <div class="year-group">
+          <div class="year-indicator">
+            <div class="year-circle">
+              <span class="year-text">{{ .Key }}</span>
+              <div class="year-glow"></div>
+            </div>
+            <div class="year-line"></div>
+          </div>
+          <div class="year-posts">
+            {{ range sort .Pages "Params.enddate" "desc" }}
+              {{ partial "tag-post-card.html" (dict "page" . "term" $term) }}
+            {{ end }}
+          </div>
+        </div>
+      {{ end }}
+    </div>
+
+    <div class="tag-nav-links">
+      <a href="{{ "/skills/" | relLangURL }}" class="tag-nav-link">{{ i18n "allTags" }}</a>
+      <a href="{{ "/" | relLangURL }}" class="tag-nav-link">{{ i18n "backToHome" }}</a>
+    </div>
+  </div>
+
+  <style>
+    .year-caption { font-family: ui-monospace, monospace; font-size: .75rem; letter-spacing: .08em;
+                    text-transform: uppercase; opacity: .7; margin: 0 0 .75rem; }
+  </style>
+{{ end }}

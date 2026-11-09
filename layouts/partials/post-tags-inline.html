@@ -1,0 +1,24 @@
+{{ $limit := default 0 .limit }}
+{{ if .Params.skills }}
+  <div class="post-tags">
+    {{ if gt $limit 0 }}
+      {{ range first $limit .Params.skills }}
+        <a
+          href="{{ "/skills/" | relLangURL }}{{ . | urlize }}"
+          class="post-tag"
+          onclick="event.stopPropagation();"
+          >{{ . }}</a
+        >
+      {{ end }}
+    {{ else }}
+      {{ range .Params.skills }}
+        <a
+          href="{{ "/skills/" | relLangURL }}{{ . | urlize }}"
+          class="post-tag"
+          onclick="event.stopPropagation();"
+          >{{ . }}</a
+        >
+      {{ end }}
+    {{ end }}
+  </div>
+{{ end }}

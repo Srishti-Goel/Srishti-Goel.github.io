@@ -1,0 +1,76 @@
+{{ if eq . "hammer" }}
+<svg class="tl" viewBox="0 0 64 128" aria-hidden="true" focusable="false">
+<rect class="c" x="27" y="34" width="10" height="86" rx="4.5"/>
+<rect class="c2" x="27" y="92" width="10" height="5"/>
+<rect class="m2" x="24" y="28" width="16" height="10" rx="1"/>
+<rect class="m" x="6" y="8" width="52" height="24" rx="3"/>
+<rect class="m2" x="6" y="8" width="14" height="24" rx="3"/>
+<rect class="m2" x="44" y="8" width="14" height="24" rx="3"/>
+</svg>
+{{ else if eq . "screwdriver" }}
+<svg class="tl" viewBox="0 0 64 128" aria-hidden="true" focusable="false">
+<rect class="m" x="30" y="14" width="4" height="58"/>
+<path class="m2" d="M30 14l1.6-9h.8l1.6 9z"/>
+<rect class="m2" x="26" y="66" width="12" height="10" rx="1.5"/>
+<rect class="c" x="22" y="74" width="20" height="50" rx="9"/>
+<rect class="c2" x="22" y="92" width="20" height="5"/>
+<rect class="c2" x="22" y="102" width="20" height="5"/>
+</svg>
+{{ else if eq . "pliers" }}
+<svg class="tl" viewBox="0 0 64 128" aria-hidden="true" focusable="false">
+<path class="ms" d="M30 52 L24 82 M34 52 L40 82"/>
+<path class="cs" d="M25 82 L17 116 M39 82 L47 116"/>
+<path class="m" d="M21 48 Q19 24 27 5 L30.6 5 L31.2 32 L32.8 32 L33.4 5 L37 5 Q45 24 43 48 Z"/>
+<path class="k" d="M26 12l3 0M25 18l4 0M24.5 24l4.5 0M35 12l3 0M35 18l4 0M35 24l4.5 0"/>
+<circle class="m2" cx="32" cy="46" r="5"/>
+<circle class="m" cx="32" cy="46" r="1.8"/>
+</svg>
+{{ else if eq . "tape" }}
+<svg class="tl" viewBox="0 36 64 74" aria-hidden="true" focusable="false">
+<rect class="m" x="38" y="92" width="22" height="8"/>
+<path class="k" d="M43 92v4M48 92v5M53 92v4M58 92v5"/>
+<rect class="m2" x="58" y="86" width="4.5" height="20" rx="1"/>
+<circle class="c" cx="29" cy="68" r="27"/>
+<circle class="c2" cx="29" cy="68" r="15"/>
+<circle class="m" cx="29" cy="68" r="6"/>
+</svg>
+{{ else if eq . "ruler" }}
+<svg class="tl" viewBox="0 0 64 128" aria-hidden="true" focusable="false">
+<rect class="c" x="18" y="6" width="28" height="116" rx="3"/>
+<path class="k" d="M22 16h14M22 22h8M22 28h14M22 34h8M22 40h14M22 46h8M22 52h14M22 58h8M22 64h14M22 70h8M22 76h14M22 82h8M22 88h14M22 94h8M22 100h14M22 106h8M22 112h14"/>
+</svg>
+{{ else if eq . "nut" }}
+<svg class="tl" viewBox="0 34 64 60" aria-hidden="true" focusable="false">
+<path class="c" fill-rule="evenodd" d="M60 64 L46 88 L18 88 L4 64 L18 40 L46 40 Z M44 64 a12 12 0 1 0 -24 0 a12 12 0 1 0 24 0 Z"/>
+<path class="c2" fill-rule="evenodd" opacity=".4" d="M60 64 L46 88 L18 88 L4 64 L18 40 L46 40 Z M53 64 L42.5 82 L21.5 82 L11 64 L21.5 46 L42.5 46 Z"/>
+</svg>
+{{ else if eq . "bolt" }}
+<svg class="tl" viewBox="0 0 64 128" aria-hidden="true" focusable="false">
+<path class="c" d="M44 8 L52 22 L44 36 L20 36 L12 22 L20 8 Z"/>
+<rect class="m" x="24" y="36" width="16" height="84" rx="2"/>
+<path class="k" d="M24 44l16 -4M24 52l16 -4M24 60l16 -4M24 68l16 -4M24 76l16 -4M24 84l16 -4M24 92l16 -4M24 100l16 -4M24 108l16 -4"/>
+</svg>
+{{ else if eq . "brush" }}
+<svg class="tl" viewBox="0 0 64 128" aria-hidden="true" focusable="false">
+<path class="bristle" d="M21 46 L43 46 L45 12 Q32 4 19 12 Z"/>
+<path class="k" d="M26 40V16M32 40V12M38 40V16"/>
+<rect class="m" x="21" y="44" width="22" height="18" rx="2"/>
+<rect class="c" x="25" y="60" width="14" height="62" rx="6"/>
+</svg>
+{{ else if eq . "bit" }}
+<svg class="tl" viewBox="0 0 64 128" aria-hidden="true" focusable="false">
+<path class="c" d="M26 12 L38 12 L38 100 L32 118 L26 100 Z"/>
+<path class="k" d="M26 28l12-6M26 44l12-6M26 60l12-6M26 76l12-6M26 92l12-6"/>
+<rect class="m2" x="22" y="4" width="20" height="10" rx="2"/>
+</svg>
+{{ else if eq . "gear" }}
+<svg class="tl" viewBox="0 32 64 64" aria-hidden="true" focusable="false">
+<path class="c" fill-rule="evenodd" d="M52.9 62.5 L59.9 66.0 L58.6 72.9 L50.8 73.4 L47.9 77.8 L50.4 85.1 L44.5 89.0 L38.6 83.9 L33.5 84.9 L30.0 91.9 L23.1 90.6 L22.6 82.8 L18.2 79.9 L10.9 82.4 L7.0 76.5 L12.1 70.6 L11.1 65.5 L4.1 62.0 L5.4 55.1 L13.2 54.6 L16.1 50.2 L13.6 42.9 L19.5 39.0 L25.4 44.1 L30.5 43.1 L34.0 36.1 L40.9 37.4 L41.4 45.2 L45.8 48.1 L53.1 45.6 L57.0 51.5 L51.9 57.4 Z M40 64 a8 8 0 1 0 -16 0 a8 8 0 1 0 16 0 Z"/>
+</svg>
+{{ else }}
+<svg class="tl" viewBox="0 0 64 128" aria-hidden="true" focusable="false">
+<path class="c" d="M15 30 L15 15 L26 3 L26 22 L38 22 L38 3 L49 15 L49 30 Q49 40 38 42 L38 108 Q38 120 32 120 Q26 120 26 108 L26 42 Q15 40 15 30 Z"/>
+<circle class="c2" cx="32" cy="108" r="3.5"/>
+<path class="c2" d="M26 42 L38 42 L38 50 L26 50 Z"/>
+</svg>
+{{ end }}

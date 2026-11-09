@@ -1,0 +1,13 @@
+{{- $.Scratch.Add "index" slice -}}
+{{- range where site.RegularPages "Type" "projects" -}}
+  {{- $.Scratch.Add "index" (dict 
+    "title" .Title 
+    "permalink" .RelPermalink 
+    "summary" (.Summary | plainify | truncate 200) 
+    "date" (.Date.Format "2006-01-02") 
+    "skills" .Params.skills
+    "content" (.Plain | truncate 500)
+  ) -}}
+{{- end -}}
+{{- $.Scratch.Get "index" | jsonify -}}
+

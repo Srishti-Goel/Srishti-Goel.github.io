@@ -1,0 +1,12 @@
+<div class="post-meta-inline">
+  {{ with .Params.startdate }}
+  {{ $s := time.AsTime . }}
+  {{ $start := $s.Format "Jan 2006" }}
+  {{ $end := "Present" }}
+  {{ with $.Params.enddate }}{{ $end = (time.AsTime .).Format "Jan 2006" }}{{ end }}
+  <span class="pd-dates">
+    <time datetime="{{ $s.Format "2006-01-02" }}">{{ $start }}</time>{{ if ne $start $end }} – {{ $end }}{{ end }}
+  </span>
+  {{ end }}
+
+</div>
